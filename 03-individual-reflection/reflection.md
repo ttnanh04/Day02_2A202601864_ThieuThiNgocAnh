@@ -80,7 +80,89 @@ Thông tin nằm ở nhiều kênh
 → Nhóm trưởng phải hỏi từng thành viên
 → Phải đối chiếu task, deadline và status thủ công
 → Task chậm được phát hiện quá muộn
-### 3.3. Nếu làm lại, tôi sẽ challenge nhóm mạnh hơn ở điểm nào?
+```
+
+Vì vậy, nhóm chuyển từ việc nghĩ đến một Agent tự động quản lý toàn bộ tiến độ sang một Workflow nhỏ hơn, trong đó AI chỉ hỗ trợ tổng hợp thông tin và nhóm trưởng vẫn kiểm tra trước khi hành động.
+
+---
+
+### 3.3. Tôi có thay đổi ý kiến sau khi bị challenge không?
+
+Có.
+
+Ban đầu, tôi cho rằng có thể sử dụng Agent để tự động đọc nhiều kênh, theo dõi trạng thái và nhắc các thành viên.
+
+Sau khi thảo luận với nhóm, tôi nhận ra Agent có một số rủi ro:
+
+- Cần quyền truy cập vào nhiều nguồn dữ liệu.
+- Có thể hiểu sai nội dung chat.
+- Có thể gán sai owner hoặc deadline.
+- Có thể gửi reminder không cần thiết.
+- Khó kiểm soát khi dữ liệu đầu vào chưa đầy đủ.
+- Có thể khiến thành viên cảm thấy bị giám sát.
+
+Từ đó, tôi thay đổi ý kiến và lựa chọn Workflow:
+
+```text
+AI tổng hợp dữ liệu
+→ Rule kiểm tra
+→ Nhóm trưởng review
+→ Nhóm trưởng quyết định follow-up
+```
+
+Tôi nhận ra rằng giải pháp tự động hóa nhiều nhất chưa chắc là giải pháp phù hợp nhất. Trong trường hợp này, Workflow có mức kiểm soát và tính khả thi cao hơn Agent.
+
+---
+
+### 3.4. Tôi đóng góp gì thật sự vào artifact cuối?
+
+Đóng góp chính của tôi trong nhóm là phần **đề xuất và phân tích giải pháp**.
+
+Tôi đã tham gia các công việc sau:
+
+- Phân tích các phương án Rule, Workflow và Agent.
+- Làm rõ vì sao Rule thuần chưa giải quyết được dữ liệu nằm trong chat hoặc meeting notes.
+- Chỉ ra rằng Agent có phạm vi quá rộng so với yêu cầu của bài.
+- Đề xuất Workflow kết hợp AI, Rule và human review.
+- Xác định vị trí human boundary trong workflow.
+- Đề xuất AI không tự giao task, đổi deadline hoặc đánh giá thành viên.
+- Đề xuất pilot nhỏ sử dụng meeting notes, chat summary và bảng task.
+- Đề xuất fallback và rollback nếu AI không tạo đủ giá trị.
+- Tham gia xây dựng nội dung slide giải pháp.
+- Tham gia so sánh lợi ích trước và sau khi áp dụng giải pháp.
+
+Đóng góp quan trọng nhất của tôi là giúp nhóm tránh tự động hóa quá mức và giữ giải pháp trong phạm vi có thể thực hiện, kiểm thử và kiểm soát.
+
+---
+
+### 3.5. Điều khó nhất khi viết Problem Statement là gì?
+
+Điều khó nhất là tránh đưa giải pháp vào quá sớm.
+
+Khi đã nghĩ đến AI, rất dễ viết:
+
+> Nhóm cần một AI để theo dõi tiến độ.
+
+Tuy nhiên, đây là mô tả solution, không phải Problem Statement.
+
+Problem cần tập trung vào actor, workflow và pain hiện tại:
+
+> Nhóm trưởng không nắm được tiến độ tổng thể vì dữ liệu task và trạng thái nằm phân tán, dẫn đến phải hỏi lại nhiều lần và phát hiện task chậm quá muộn.
+
+Khó khăn thứ hai là xác định success metric khi nhóm chưa có đủ dữ liệu thực tế.
+
+Các số liệu như:
+
+- Mất 30–45 phút để tổng hợp tiến độ.
+- Phải hỏi lại 5–10 lần trong một project.
+- Giảm ít nhất 50% task trễ.
+- Phát hiện task chậm sớm hơn ít nhất 3 ngày.
+
+đều cần được kiểm chứng bằng validation hoặc pilot. Nếu chưa có dữ liệu đo, nhóm chỉ nên xem đây là baseline hoặc target tạm thời, không nên coi là evidence đã được xác nhận.
+
+---
+
+### 3.6. Nếu làm lại, tôi sẽ challenge nhóm mạnh hơn ở điểm nào?
 
 Nếu làm lại, tôi sẽ challenge nhóm mạnh hơn ở ba điểm.
 
@@ -106,6 +188,7 @@ Vì vậy, nhóm cần xác định rõ:
 - Bao lâu phải cập nhật một lần?
 - Nguồn nào được coi là nguồn dữ liệu chính?
 - Khi chat và bảng task mâu thuẫn thì ưu tiên nguồn nào?
+- Khi không có dữ liệu mới thì hệ thống xử lý như thế nào?
 
 #### Evidence
 
@@ -147,3 +230,131 @@ Ví dụ:
 Nếu deadline còn dưới 3 ngày
 và status chưa hoàn thành
 → Gắn nhãn “Cần kiểm tra”.
+```
+
+Rule có các ưu điểm:
+
+- Dễ xây dựng.
+- Dễ kiểm tra.
+- Kết quả ổn định.
+- Không cần AI để xử lý các điều kiện đơn giản.
+
+Tuy nhiên, Rule không thể hiểu tốt nội dung không có cấu trúc trong chat hoặc meeting notes.
+
+Ví dụ, Rule khó phân biệt hai câu:
+
+```text
+“Nam làm phần phân tích nhé.”
+```
+
+và:
+
+```text
+“Chưa chốt Nam có làm phần phân tích hay không.”
+```
+
+Nếu chỉ tìm từ khóa “Nam” và “phân tích”, Rule có thể hiểu sai câu thứ hai thành một task đã được giao.
+
+### Workflow
+
+Workflow phù hợp khi quy trình có các bước tương đối rõ và cần con người kiểm tra trước khi hành động.
+
+Workflow nhóm đề xuất là:
+
+```text
+Meeting notes / chat summary
+→ AI trích xuất task, owner, deadline và status
+→ Rule kiểm tra dữ liệu thiếu hoặc quá hạn
+→ AI tạo progress summary và risk summary
+→ Nhóm trưởng review
+→ Nhóm trưởng quyết định follow-up
+```
+
+Workflow là lựa chọn phù hợp nhất vì:
+
+- Quy trình có trình tự tương đối cố định.
+- AI chỉ hỗ trợ ở bước xử lý ngôn ngữ.
+- Rule xử lý tốt các điều kiện rõ ràng.
+- Nhóm trưởng vẫn giữ quyền quyết định.
+- Có thể kiểm tra output ở từng bước.
+- Có thể quay lại cách làm thủ công khi AI sai.
+
+### Agent
+
+Agent phù hợp khi hệ thống phải:
+
+- Tự lập kế hoạch.
+- Tự lựa chọn công cụ.
+- Xử lý nhiều nhánh khác nhau.
+- Tự quyết định bước tiếp theo.
+- Thực hiện hành động với mức tự chủ cao.
+
+Ví dụ, một Agent hoàn chỉnh có thể:
+
+```text
+Tự đọc Discord
+→ Tìm task mới
+→ Hỏi thành viên về status
+→ Cập nhật bảng task
+→ Đánh giá nguy cơ trễ
+→ Tự gửi reminder
+→ Tự đề xuất đổi phân công
+```
+
+Trong problem theo dõi tiến độ bài nhóm, Agent chưa cần thiết vì workflow tương đối cố định.
+
+Nếu để Agent tự đọc toàn bộ chat, tự hỏi thành viên và tự gửi reminder thì có thể phát sinh các vấn đề:
+
+- Quyền truy cập dữ liệu quá lớn.
+- Dễ hiểu sai ngữ cảnh.
+- Có thể gửi nhầm thông báo.
+- Có thể tạo cảm giác giám sát.
+- Khó xác định trách nhiệm khi hệ thống sai.
+- Chi phí xây dựng và kiểm thử cao hơn.
+
+Do đó, nhóm chọn Workflow thay vì Agent.
+
+---
+
+## 5. Nếu làm lại
+
+Nếu làm lại, tôi sẽ:
+
+1. Kiểm tra non-AI alternative trước.
+2. Đo baseline thực tế trước khi đặt target.
+3. Xác định rõ nguồn dữ liệu chính.
+4. Kiểm tra thành viên có cập nhật trạng thái thường xuyên không.
+5. Thử template và Rule trước khi thêm AI.
+6. Chỉ sử dụng AI tại bước cần hiểu nội dung tự nhiên.
+7. Giữ human review trước mọi hành động ảnh hưởng đến thành viên.
+8. Chỉ cân nhắc Agent khi Workflow không đáp ứng được yêu cầu.
+
+Thứ tự thử nghiệm tôi sẽ đề xuất là:
+
+```text
+Template và quy định cập nhật
+→ Rule kiểm tra task
+→ AI tổng hợp tiến độ
+→ Human review
+→ Chỉ cân nhắc Agent nếu thực sự cần
+```
+
+Cách tiếp cận này giúp nhóm kiểm tra giải pháp từ đơn giản đến phức tạp, tránh thêm AI vào những bước mà Rule hoặc thay đổi quy trình đã có thể giải quyết.
+
+---
+
+## Kết luận reflection
+
+Qua phần đề xuất giải pháp, tôi học được rằng AI không nên được sử dụng chỉ để làm solution trông hiện đại hơn.
+
+Trong problem theo dõi tiến độ bài nhóm, giá trị phù hợp nhất của AI là:
+
+- Trích xuất thông tin từ nội dung không có cấu trúc.
+- Chuẩn hóa task, owner, deadline và status.
+- Tạo progress summary.
+- Phát hiện dữ liệu còn thiếu.
+- Đánh dấu các task cần nhóm trưởng kiểm tra.
+
+AI không thay nhóm trưởng quản lý nhóm.
+
+AI chỉ hỗ trợ nhóm trưởng có thông tin rõ ràng hơn để đưa ra quyết định nhanh, chủ động và chính xác hơn.
